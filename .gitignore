@@ -1,0 +1,27 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Secrets
+.env
+
+# Large source data (re-downloadable from OFAC Sanctions List Service)
+sdn.xml
+sdn_advanced.xml
+
+
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# Generated benchmark (reproducible: seeded, see make_benchmark.py SEED)
+benchmark/
