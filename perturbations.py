@@ -181,17 +181,16 @@ def p_initialize(ctx: EntryContext, rng: random.Random) -> PerturbResult | None:
 
 
 def p_dob_degradation(ctx: EntryContext, rng: random.Random) -> PerturbResult | None:
-    """Name unchanged; the DOB is degraded or missing.
+    """Name unchanged; the customer record has no year of birth.
 
     The point of this case is the adjudicator's hardest rule: absent is not
-    conflict. A missing DOB means the hit cannot be cleared on DOB, so these
+    conflict. With no year of birth the hit cannot be cleared on it, so these
     queries should land in the review band, not be auto-cleared.
     """
     if ctx.entry_type != "individual":
         return None
-    mode = rng.choice(("year_only", "absent"))
-    return PerturbResult(base_name(ctx), drop_attributes=("dob",) if mode == "absent" else (),
-                         note=mode)
+    return PerturbResult(base_name(ctx), drop_attributes=("year_of_birth",),
+                         note="year of birth withheld")
 
 
 # --------------------------------------------------------------------------
@@ -219,7 +218,12 @@ def p_legal_suffix_swap(ctx: EntryContext, rng: random.Random) -> PerturbResult 
         return None
     if suffix and rng.random() < 0.5:
         return PerturbResult(stem, note=f"dropped suffix {suffix}")
-    replacement = rng.choice([s for s in SUBSTITUTABLE_SUFFIXES if s != suffix])
+    # Exclude any legal form already present anywhere in the name: Russian-style
+    # names put it FIRST ("OOO STROYINVEST"), and appending OOO again would
+    # produce "OOO STROYINVEST OOO", which no customer record contains.
+    present = set(normalize(ctx.primary_name).split())
+    replacement = rng.choice([x for x in SUBSTITUTABLE_SUFFIXES
+                              if x != suffix and normalize(x) not in present])
     return PerturbResult(f"{stem} {replacement}", note=f"{suffix or 'none'} -> {replacement}")
 
 
@@ -268,7 +272,11 @@ def p_hyphen_spacing(ctx: EntryContext, rng: random.Random) -> PerturbResult | N
     name = base_name(ctx)
     if "-" not in name:
         return None
-    return PerturbResult(name.replace("-", " " if rng.random() < 0.5 else ""), note="hyphen respaced")
+    # Always REMOVE the hyphen rather than sometimes replacing it with a space:
+    # normalize() already turns punctuation into whitespace, so the space variant
+    # is invisible to the matcher and would test nothing. ALFAISAL is the hard
+    # case, because it defeats tokenisation entirely.
+    return PerturbResult(name.replace("-", ""), note="hyphen removed")
 
 
 def p_branch_qualifier(ctx: EntryContext, rng: random.Random) -> PerturbResult | None:
@@ -279,12 +287,16 @@ def p_branch_qualifier(ctx: EntryContext, rng: random.Random) -> PerturbResult |
 
 
 def p_attribute_degradation(ctx: EntryContext, rng: random.Random) -> PerturbResult | None:
-    """Entity equivalent of a missing DOB: no jurisdiction or no registration number."""
+    """Entity equivalent of a missing year of birth: no place of registration.
+
+    Full name plus place of registration is the whole entity match rule, so
+    without the registration country the hit can only be cleared or confirmed
+    on the name — which is never enough. Expected outcome: review.
+    """
     if ctx.entry_type != "entity":
         return None
-    dropped = rng.choice((("jurisdiction",), ("registration_number",),
-                          ("jurisdiction", "registration_number")))
-    return PerturbResult(ctx.primary_name, drop_attributes=dropped, note="attributes withheld")
+    return PerturbResult(ctx.primary_name, drop_attributes=("registration_country",),
+                         note="registration country withheld")
 
 
 # --------------------------------------------------------------------------
