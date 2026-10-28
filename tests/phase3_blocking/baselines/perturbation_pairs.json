@@ -1,0 +1,255 @@
+{
+  "sample": 150,
+  "pairs": {
+    "entity:acronym+legal_suffix_swap": {
+      "found": 9,
+      "n": 106,
+      "recall": 0.0849
+    },
+    "entity:acronym+typo": {
+      "found": 3,
+      "n": 103,
+      "recall": 0.0291
+    },
+    "entity:ampersand+acronym": {
+      "found": 11,
+      "n": 12,
+      "recall": 0.9167
+    },
+    "entity:ampersand+legal_suffix_swap": {
+      "found": 12,
+      "n": 12,
+      "recall": 1.0
+    },
+    "entity:ampersand+transliteration": {
+      "found": 1,
+      "n": 1,
+      "recall": 1.0
+    },
+    "entity:ampersand+typo": {
+      "found": 12,
+      "n": 12,
+      "recall": 1.0
+    },
+    "entity:hyphen_spacing+acronym": {
+      "found": 2,
+      "n": 5,
+      "recall": 0.4
+    },
+    "entity:hyphen_spacing+legal_suffix_swap": {
+      "found": 8,
+      "n": 8,
+      "recall": 1.0
+    },
+    "entity:hyphen_spacing+transliteration": {
+      "found": 1,
+      "n": 1,
+      "recall": 1.0
+    },
+    "entity:hyphen_spacing+typo": {
+      "found": 8,
+      "n": 8,
+      "recall": 1.0
+    },
+    "entity:legal_suffix_swap+acronym": {
+      "found": 105,
+      "n": 105,
+      "recall": 1.0
+    },
+    "entity:legal_suffix_swap+ampersand": {
+      "found": 12,
+      "n": 12,
+      "recall": 1.0
+    },
+    "entity:legal_suffix_swap+hyphen_spacing": {
+      "found": 7,
+      "n": 8,
+      "recall": 0.875
+    },
+    "entity:legal_suffix_swap+transliteration": {
+      "found": 24,
+      "n": 24,
+      "recall": 1.0
+    },
+    "entity:legal_suffix_swap+typo": {
+      "found": 145,
+      "n": 150,
+      "recall": 0.9667
+    },
+    "entity:transliteration+acronym": {
+      "found": 2,
+      "n": 6,
+      "recall": 0.3333
+    },
+    "entity:transliteration+ampersand": {
+      "found": 1,
+      "n": 1,
+      "recall": 1.0
+    },
+    "entity:transliteration+hyphen_spacing": {
+      "found": 1,
+      "n": 1,
+      "recall": 1.0
+    },
+    "entity:transliteration+legal_suffix_swap": {
+      "found": 7,
+      "n": 7,
+      "recall": 1.0
+    },
+    "entity:transliteration+typo": {
+      "found": 7,
+      "n": 7,
+      "recall": 1.0
+    },
+    "entity:typo+acronym": {
+      "found": 87,
+      "n": 114,
+      "recall": 0.7632
+    },
+    "entity:typo+ampersand": {
+      "found": 11,
+      "n": 11,
+      "recall": 1.0
+    },
+    "entity:typo+hyphen_spacing": {
+      "found": 8,
+      "n": 8,
+      "recall": 1.0
+    },
+    "entity:typo+legal_suffix_swap": {
+      "found": 148,
+      "n": 150,
+      "recall": 0.9867
+    },
+    "entity:typo+transliteration": {
+      "found": 4,
+      "n": 4,
+      "recall": 1.0
+    },
+    "individual:hyphen_spacing+initialize": {
+      "found": 9,
+      "n": 9,
+      "recall": 1.0
+    },
+    "individual:hyphen_spacing+token_drop": {
+      "found": 8,
+      "n": 8,
+      "recall": 1.0
+    },
+    "individual:hyphen_spacing+transliteration": {
+      "found": 6,
+      "n": 6,
+      "recall": 1.0
+    },
+    "individual:hyphen_spacing+typo": {
+      "found": 9,
+      "n": 9,
+      "recall": 1.0
+    },
+    "individual:initialize+hyphen_spacing": {
+      "found": 9,
+      "n": 9,
+      "recall": 1.0
+    },
+    "individual:initialize+token_drop": {
+      "found": 108,
+      "n": 111,
+      "recall": 0.973
+    },
+    "individual:initialize+transliteration": {
+      "found": 14,
+      "n": 14,
+      "recall": 1.0
+    },
+    "individual:initialize+typo": {
+      "found": 131,
+      "n": 144,
+      "recall": 0.9097
+    },
+    "individual:name_order_inversion+hyphen_spacing": {
+      "found": 9,
+      "n": 9,
+      "recall": 1.0
+    },
+    "individual:name_order_inversion+initialize": {
+      "found": 150,
+      "n": 150,
+      "recall": 1.0
+    },
+    "individual:name_order_inversion+token_drop": {
+      "found": 111,
+      "n": 111,
+      "recall": 1.0
+    },
+    "individual:name_order_inversion+transliteration": {
+      "found": 38,
+      "n": 38,
+      "recall": 1.0
+    },
+    "individual:name_order_inversion+typo": {
+      "found": 148,
+      "n": 150,
+      "recall": 0.9867
+    },
+    "individual:token_drop+hyphen_spacing": {
+      "found": 7,
+      "n": 7,
+      "recall": 1.0
+    },
+    "individual:token_drop+initialize": {
+      "found": 108,
+      "n": 111,
+      "recall": 0.973
+    },
+    "individual:token_drop+transliteration": {
+      "found": 24,
+      "n": 24,
+      "recall": 1.0
+    },
+    "individual:token_drop+typo": {
+      "found": 109,
+      "n": 110,
+      "recall": 0.9909
+    },
+    "individual:transliteration+hyphen_spacing": {
+      "found": 6,
+      "n": 6,
+      "recall": 1.0
+    },
+    "individual:transliteration+initialize": {
+      "found": 37,
+      "n": 38,
+      "recall": 0.9737
+    },
+    "individual:transliteration+token_drop": {
+      "found": 29,
+      "n": 29,
+      "recall": 1.0
+    },
+    "individual:transliteration+typo": {
+      "found": 35,
+      "n": 37,
+      "recall": 0.9459
+    },
+    "individual:typo+hyphen_spacing": {
+      "found": 9,
+      "n": 9,
+      "recall": 1.0
+    },
+    "individual:typo+initialize": {
+      "found": 136,
+      "n": 149,
+      "recall": 0.9128
+    },
+    "individual:typo+token_drop": {
+      "found": 108,
+      "n": 110,
+      "recall": 0.9818
+    },
+    "individual:typo+transliteration": {
+      "found": 26,
+      "n": 26,
+      "recall": 1.0
+    }
+  }
+}

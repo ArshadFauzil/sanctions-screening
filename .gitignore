@@ -25,3 +25,7 @@ sdn_advanced.xml
 
 # Generated benchmark (reproducible: seeded, see make_benchmark.py SEED)
 benchmark/
+
+# Test tooling caches
+.hypothesis/
+.pytest_cache/
