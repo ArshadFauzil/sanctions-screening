@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 import unicodedata
 
-from reference_tables import GENERIC_CORPORATE_TOKENS, LEGAL_SUFFIXES
+from common.reference_tables import GENERIC_CORPORATE_TOKENS, LEADING_LEGAL_FORMS, LEGAL_SUFFIXES
 
 # Longest suffix first, so "L.L.C." is matched before "L".
 _SUFFIX_PATTERNS = sorted(LEGAL_SUFFIXES, key=len, reverse=True)
@@ -80,3 +80,35 @@ def distinctive_tokens(name: str) -> list[str]:
             continue
         out.append(tok)
     return out
+
+
+_LEADING = sorted((normalize(x) for x in LEADING_LEGAL_FORMS), key=len, reverse=True)
+_TRAILING = sorted({normalize(x) for x in LEGAL_SUFFIXES if normalize(x)}, key=len, reverse=True)
+
+
+def strip_legal_forms(name: str) -> str:
+    """Entity stem with EVERY legal form removed, from both ends, repeatedly.
+
+    strip_legal_suffix() removes one trailing form, which leaves "PVT" behind in
+    "MAROC INTERNATIONAL PVT LTD" and "CO" in "CHINA 49 GROUP CO., LIMITED", and
+    ignores Russian-style leading forms ("OOO STROYINVEST"). Blocking needs the
+    bare identity, so this keeps stripping until nothing changes. If stripping
+    would leave nothing (a firm literally named "TRUST"), the name is returned
+    as-is.
+    """
+    s = normalize(name)
+    original = s
+    changed = True
+    while changed and s:
+        changed = False
+        for form in _TRAILING:
+            if s == form:
+                break
+            if s.endswith(" " + form):
+                s, changed = s[: -len(form) - 1].strip(), True
+                break
+        for form in _LEADING:
+            if s.startswith(form + " "):
+                s, changed = s[len(form) + 1:].strip(), True
+                break
+    return s or original

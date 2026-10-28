@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Deterministic dev/test split of the benchmark (adds a "split" field to every query).
 
-    uv run split.py                      # rewrites benchmark/queries.jsonl in place
-    uv run split.py --dev-fraction 0.25
+    uv run python -m phase2_benchmark.split                      # rewrites benchmark/queries.jsonl in place
+    uv run python -m phase2_benchmark.split --dev-fraction 0.25
 
 Why two disjoint splits rather than "a subset plus the full set"
 -----------------------------------------------------------------
@@ -37,7 +37,10 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
-DEFAULT_PATH = Path("benchmark/queries.jsonl")
+from common.paths import BENCHMARK_DIR
+
+
+DEFAULT_PATH = BENCHMARK_DIR / "queries.jsonl"
 
 
 def _h(key: str) -> int:

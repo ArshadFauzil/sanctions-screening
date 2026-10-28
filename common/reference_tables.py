@@ -129,3 +129,25 @@ GENERIC_CORPORATE_TOKENS: frozenset[str] = frozenset({
     "NATIONAL", "STATE", "PUBLIC", "PRIVATE", "JOINT", "STOCK", "AND", "OF",
     "THE", "FOR", "CENTER", "CENTRE", "OFFICE", "AGENCY", "BUREAU", "FIRM",
 })
+
+
+# Shortest acronym blocking will look up, and the benchmark will generate
+# (domain-owner decision, Oct 2026). A 2-letter "acronym" such as AS or TS is
+# shared by dozens of listed entities (AS: 100) and is a long shot for a true
+# match: the name carries almost no evidence, so the shortlist would be a tie
+# group the adjudicator can only escalate. Applied in three places:
+#   build_name_index.acronyms()            what the index stores
+#   Blocker._query_acronym_inputs()        what a query may be / expand to
+#   perturbations.p_acronym()              what the benchmark tests
+MIN_ACRONYM_LENGTH = 3
+
+
+# Legal forms written BEFORE the name (Russian/CIS convention): "OOO STROYINVEST",
+# "LIMITED LIABILITY COMPANY INVENT". Used only by strip_legal_forms() for
+# blocking; the benchmark generator is unaffected.
+LEADING_LEGAL_FORMS: tuple[str, ...] = (
+    "PUBLIC JOINT STOCK COMPANY", "OPEN JOINT STOCK COMPANY", "CLOSED JOINT STOCK COMPANY",
+    "JOINT STOCK COMPANY", "LIMITED LIABILITY COMPANY", "STATE UNITARY ENTERPRISE",
+    "FEDERAL STATE UNITARY ENTERPRISE", "OOO", "ZAO", "OAO", "PAO", "AO", "PJSC", "OJSC",
+    "CJSC", "JSC", "LLC", "TOO", "IP", "CHP",
+)

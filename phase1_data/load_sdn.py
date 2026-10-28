@@ -15,8 +15,8 @@ Row buffers are flushed to Postgres every --batch-size entries (default
 long run can be interrupted without losing prior progress.
 
 Usage:
-    uv run load_sdn.py --reset                 # fresh load, ~19,391 entries
-    uv run load_sdn.py --limit 100 --reset      # smoke test first
+    uv run python -m phase1_data.load_sdn --reset                 # fresh load, ~19,391 entries
+    uv run python -m phase1_data.load_sdn --limit 100 --reset      # smoke test first
 """
 
 from __future__ import annotations
@@ -32,6 +32,8 @@ from pathlib import Path
 import psycopg
 from dotenv import load_dotenv
 from lxml import etree
+
+from common.paths import DATA_DIR
 
 NS = "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/XML"
 
@@ -303,7 +305,7 @@ def main() -> None:
     here = Path(__file__).resolve().parent
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--xml-path", type=Path, default=here / "sdn.xml")
+    parser.add_argument("--xml-path", type=Path, default=DATA_DIR / "sdn.xml")
     parser.add_argument("--schema-path", type=Path, default=here / "schema.sql")
     parser.add_argument(
         "--database-url",

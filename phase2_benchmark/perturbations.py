@@ -28,9 +28,10 @@ import random
 import string
 from dataclasses import dataclass, field
 
-from names import find_legal_suffix, normalize, strip_diacritics, strip_legal_suffix
-from reference_tables import (
+from common.names import find_legal_suffix, normalize, strip_diacritics, strip_legal_suffix
+from common.reference_tables import (
     DROPPABLE_PARTICLES,
+    MIN_ACRONYM_LENGTH,
     SUBSTITUTABLE_SUFFIXES,
     TRANSLITERATION_MAP,
 )
@@ -241,7 +242,13 @@ def p_acronym(ctx: EntryContext, rng: random.Random) -> PerturbResult | None:
     stem_tokens = strip_legal_suffix(ctx.primary_name).split()
     if len(stem_tokens) < 2:
         return None
-    return PerturbResult("".join(t[0] for t in stem_tokens), note="acronym of stem tokens")
+    acronym = "".join(t[0] for t in stem_tokens)
+    # Blocking does not look up acronyms shorter than MIN_ACRONYM_LENGTH (3):
+    # a 2-letter one is shared by dozens of entities and is out of scope by
+    # design, so the benchmark does not test it.
+    if len(acronym) < MIN_ACRONYM_LENGTH:
+        return None
+    return PerturbResult(acronym, note="acronym of stem tokens")
 
 
 def p_ampersand(ctx: EntryContext, rng: random.Random) -> PerturbResult | None:

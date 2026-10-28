@@ -2,8 +2,8 @@
 """Build the labelled benchmark (plan section 2). No hand annotation anywhere.
 
     uv add faker
-    python make_benchmark.py --individuals 120 --entities 80 --negatives 3000
-    python make_benchmark.py --show-features        # diagnostic: what did Phase 1 load?
+    uv run python -m phase2_benchmark.make_benchmark --individuals 120 --entities 80 --negatives 3000
+    uv run python -m phase2_benchmark.make_benchmark --show-features        # diagnostic: what did Phase 1 load?
 
 Outputs benchmark/queries.jsonl and benchmark/summary.json.
 
@@ -31,10 +31,11 @@ import psycopg
 from dotenv import load_dotenv
 from psycopg.rows import dict_row
 
-from names import distinctive_tokens, find_legal_suffix, normalize, strip_legal_suffix
-from perturbations import EntryContext, apply_all, base_name
-from reference_tables import GENERIC_CORPORATE_TOKENS, SUBSTITUTABLE_SUFFIXES
-from split import assign_splits, split_report, verify as verify_split
+from common.paths import BENCHMARK_DIR
+from common.names import distinctive_tokens, find_legal_suffix, normalize, strip_legal_suffix
+from phase2_benchmark.perturbations import EntryContext, apply_all, base_name
+from common.reference_tables import GENERIC_CORPORATE_TOKENS, SUBSTITUTABLE_SUFFIXES
+from phase2_benchmark.split import assign_splits, split_report, verify as verify_split
 
 SEED = 42
 INDIVIDUAL_ATTRS = ("dob", "nationality", "place_of_birth", "citizenship")
@@ -418,7 +419,7 @@ def main() -> None:
     ap.add_argument("--individuals", type=int, default=120)
     ap.add_argument("--entities", type=int, default=80)
     ap.add_argument("--negatives", type=int, default=3000)
-    ap.add_argument("--out", type=Path, default=Path("benchmark"))
+    ap.add_argument("--out", type=Path, default=BENCHMARK_DIR)
     ap.add_argument("--database-url", default=None)
     ap.add_argument("--show-features", action="store_true",
                     help="print the feature_type distribution Phase 1 loaded, then exit")
@@ -457,7 +458,7 @@ def main() -> None:
             if counts["sdn_entries"] == 0:
                 print("\nDATABASE IS EMPTY. The schema exists but nothing was loaded.")
                 print("Run the loader first, then re-run this command:")
-                print("    uv run load_sdn.py --xml sdn.xml")
+                print("    uv run python -m phase1_data.load_sdn --reset")
                 return
             if counts["sdn_features"] == 0:
                 print("\nEntries loaded but NO FEATURES. The benchmark cannot sample without")
